@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anusheel Soni | Game Developer</title>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
     <style>
         /* ===== CSS Variables ===== */
         :root {
@@ -768,10 +772,15 @@
             transition: all 0.3s ease;
         }
 
-        .form-button:hover {
+        .form-button:hover:not(:disabled) {
             background: var(--accent-hover);
             transform: translateY(-3px);
             box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .form-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .form-status {
@@ -1331,6 +1340,11 @@
     </footer>
 
     <script>
+        // ===== EmailJS Initialization =====
+        (function() {
+            emailjs.init('C0lYKhS-ueDqkWHJX'); // Your Public Key
+        })();
+
         // ===== Custom Cursor =====
         const cursor = document.querySelector('.cursor');
         const cursorDot = document.querySelector('.cursor-dot');
@@ -1344,13 +1358,11 @@
         });
 
         function animateCursor() {
-            // Smooth cursor follow
             cursorX += (mouseX - cursorX) * 0.15;
             cursorY += (mouseY - cursorY) * 0.15;
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
 
-            // Faster dot follow
             dotX += (mouseX - dotX) * 0.3;
             dotY += (mouseY - dotY) * 0.3;
             cursorDot.style.left = dotX + 'px';
@@ -1360,7 +1372,6 @@
         }
         animateCursor();
 
-        // Cursor hover effect
         const hoverElements = document.querySelectorAll('a, button, .project-card');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
@@ -1388,7 +1399,6 @@
             navLinks.classList.toggle('active');
         });
 
-        // Close menu when clicking a link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('active');
@@ -1436,56 +1446,46 @@
             });
         });
 
-        // ===== Contact Form Submission =====
+        // ===== Contact Form Submission with EmailJS =====
         const contactForm = document.getElementById('contactForm');
         const formStatus = document.getElementById('formStatus');
 
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
+            const submitButton = contactForm.querySelector('.form-button');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
 
             try {
-                // Using Web3Forms API - Replace 'YOUR_ACCESS_KEY' with actual key from https://web3forms.com
-                const response = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        access_key: '66c5670f-6c7d-449b-8e64-ceff5ce93fca',
-                        name: formData.name,
-                        email: formData.email,
-                        subject: formData.subject,
-                        message: formData.message
-                    })
-                });
+                const response = await emailjs.sendForm(
+                    'service_portfolio1',    // Your Service ID
+                    'template_contact',      // Your Template ID
+                    contactForm
+                );
 
-                const result = await response.json();
-
-                if (result.success) {
-                    formStatus.textContent = 'Message sent successfully! I\'ll get back to you soon.';
-                    formStatus.className = 'form-status success';
-                    formStatus.style.display = 'block';
-                    contactForm.reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
+                console.log('SUCCESS!', response.status, response.text);
+                
+                formStatus.textContent = '✓ Message sent successfully! I\'ll get back to you soon.';
+                formStatus.className = 'form-status success';
+                formStatus.style.display = 'block';
+                contactForm.reset();
+                
             } catch (error) {
-                formStatus.textContent = 'Oops! Something went wrong. Please email me directly at anusheelsoni4@gmail.com';
+                console.error('FAILED...', error);
+                
+                formStatus.textContent = '✗ Oops! Something went wrong. Please email me directly at anusheelsoni4@gmail.com';
                 formStatus.className = 'form-status error';
                 formStatus.style.display = 'block';
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                
+                setTimeout(() => {
+                    formStatus.style.display = 'none';
+                }, 5000);
             }
-
-            setTimeout(() => {
-                formStatus.style.display = 'none';
-            }, 5000);
         });
 
         // ===== Scroll Animations =====
@@ -1512,4 +1512,3 @@
     </script>
 </body>
 </html>
-
