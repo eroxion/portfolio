@@ -4,68 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anusheel Soni | Game Developer</title>
-    
-    <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    
     <style>
         /* ===== CSS Variables ===== */
         :root {
-            --bg-primary: #0f0f0f;
-            --bg-secondary: #1a1a1a;
-            --bg-card: #252525;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #13131a;
+            --bg-card: #1a1a24;
             --text-primary: #e0e0e0;
             --text-secondary: #a0a0a0;
             --accent: #00d4ff;
             --accent-hover: #00b8e6;
-            --border: #333;
-            --shadow: rgba(0, 212, 255, 0.1);
-            --cursor-size: 20px;
+            --accent-secondary: #ff006e;
+            --border: #2a2a35;
+            --shadow: rgba(0, 212, 255, 0.15);
+            --glow: rgba(0, 212, 255, 0.3);
         }
 
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f5f5f5;
-            --bg-card: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #666666;
+            --bg-primary: #faf8f3;
+            --bg-secondary: #f0ede6;
+            --bg-card: #fffcf7;
+            --text-primary: #2a2a2a;
+            --text-secondary: #5a5a5a;
             --accent: #0088cc;
             --accent-hover: #006699;
-            --border: #e0e0e0;
-            --shadow: rgba(0, 136, 204, 0.1);
-        }
-
-        /* ===== Custom Cursor ===== */
-        * {
-            cursor: none;
-        }
-
-        .cursor {
-            width: var(--cursor-size);
-            height: var(--cursor-size);
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            mix-blend-mode: difference;
-        }
-
-        .cursor-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transition: transform 0.1s ease;
-        }
-
-        .cursor.hover {
-            transform: scale(1.5);
-            background-color: var(--accent);
+            --accent-secondary: #cc0055;
+            --border: #d4cfc5;
+            --shadow: rgba(0, 136, 204, 0.2);
+            --glow: rgba(0, 136, 204, 0.25);
         }
 
         /* ===== Base Styles ===== */
@@ -73,6 +40,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none;
         }
 
         html {
@@ -88,49 +56,260 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* ===== Custom Scrollbar ===== */
-        ::-webkit-scrollbar {
+        /* ===== Enhanced Custom Cursor with Trail ===== */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(1.8);
+            background-color: rgba(0, 212, 255, 0.2);
+        }
+
+        .cursor-trail {
+            position: fixed;
             width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.6;
+            animation: fade-trail 0.6s ease-out forwards;
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
+        @keyframes fade-trail {
+            to {
+                opacity: 0;
+                transform: scale(0.3);
+            }
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--accent) 0%, var(--accent-hover) 100%);
-            border-radius: 10px;
-            transition: background 0.3s ease;
+        /* ===== Enhanced Animated Background ===== */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-hover);
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+            animation: brownian 25s infinite ease-in-out;
         }
 
-        /* ===== Navigation Bar ===== */
+        .particle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: inherit;
+            border-radius: 50%;
+            filter: blur(15px);
+            opacity: 0.5;
+        }
+
+        .particle:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.25;
+            top: 20%;
+            left: 15%;
+            animation-duration: 20s;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+            opacity: 0.2;
+            top: 60%;
+            left: 75%;
+            animation-duration: 18s;
+            animation-delay: -3s;
+        }
+
+        .particle:nth-child(3) {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #7000ff 0%, transparent 70%);
+            opacity: 0.18;
+            top: 40%;
+            left: 55%;
+            animation-duration: 22s;
+            animation-delay: -6s;
+        }
+
+        .particle:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.22;
+            top: 75%;
+            left: 25%;
+            animation-duration: 24s;
+            animation-delay: -9s;
+        }
+
+        .particle:nth-child(5) {
+            width: 110px;
+            height: 110px;
+            background: radial-gradient(circle, #00ff88 0%, transparent 70%);
+            opacity: 0.19;
+            top: 15%;
+            left: 80%;
+            animation-duration: 19s;
+            animation-delay: -12s;
+        }
+
+        .particle:nth-child(6) {
+            width: 85px;
+            height: 85px;
+            background: radial-gradient(circle, #ff00ff 0%, transparent 70%);
+            opacity: 0.21;
+            top: 85%;
+            left: 50%;
+            animation-duration: 21s;
+            animation-delay: -5s;
+        }
+
+        .particle:nth-child(7) {
+            width: 95px;
+            height: 95px;
+            background: radial-gradient(circle, #00ffff 0%, transparent 70%);
+            opacity: 0.17;
+            top: 30%;
+            left: 90%;
+            animation-duration: 23s;
+            animation-delay: -8s;
+        }
+
+        .particle:nth-child(8) {
+            width: 105px;
+            height: 105px;
+            background: radial-gradient(circle, #ffaa00 0%, transparent 70%);
+            opacity: 0.16;
+            top: 50%;
+            left: 10%;
+            animation-duration: 26s;
+            animation-delay: -11s;
+        }
+
+        @keyframes brownian {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            10% {
+                transform: translate(30px, -40px) rotate(36deg) scale(1.1);
+            }
+            20% {
+                transform: translate(-25px, 35px) rotate(72deg) scale(0.95);
+            }
+            30% {
+                transform: translate(45px, 20px) rotate(108deg) scale(1.05);
+            }
+            40% {
+                transform: translate(-35px, -30px) rotate(144deg) scale(0.9);
+            }
+            50% {
+                transform: translate(40px, 45px) rotate(180deg) scale(1.15);
+            }
+            60% {
+                transform: translate(-40px, -25px) rotate(216deg) scale(0.92);
+            }
+            70% {
+                transform: translate(35px, -35px) rotate(252deg) scale(1.08);
+            }
+            80% {
+                transform: translate(-30px, 40px) rotate(288deg) scale(0.98);
+            }
+            90% {
+                transform: translate(25px, -45px) rotate(324deg) scale(1.12);
+            }
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== Enhanced Frosted Glass Navigation ===== */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 15, 0.75);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             padding: 1rem 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         [data-theme="light"] nav {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(250, 248, 243, 0.75);
+            border-bottom: 1px solid rgba(0, 136, 204, 0.15);
         }
 
         nav.scrolled {
-            padding: 0.5rem 0;
-            box-shadow: 0 4px 20px var(--shadow);
+            padding: 0.7rem 0;
+            background: rgba(26, 26, 36, 0.95);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
         }
 
+        [data-theme="light"] nav.scrolled {
+            background: rgba(255, 252, 247, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 136, 204, 0.25);
+        }
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -139,15 +318,38 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--accent);
             text-decoration: none;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .logo::before {
+            content: '<';
+            color: var(--accent-secondary);
+            margin-right: 5px;
+            animation: blink 2s infinite;
+        }
+
+        .logo::after {
+            content: '/>';
+            color: var(--accent-secondary);
+            margin-left: 5px;
+            animation: blink 2s infinite 1s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .logo:hover {
             transform: scale(1.05);
+            text-shadow: 0 0 20px var(--glow);
         }
 
         .nav-links {
@@ -170,10 +372,11 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 2px;
-            background: var(--accent);
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
             transition: width 0.3s ease;
         }
 
@@ -187,7 +390,12 @@
             width: 100%;
         }
 
-        /* Theme Toggle */
+        .theme-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
         .theme-toggle {
             width: 50px;
             height: 26px;
@@ -196,21 +404,6 @@
             border-radius: 30px;
             position: relative;
             transition: all 0.3s ease;
-        }
-
-        .theme-toggle::before {
-            content: '☀️';
-            position: absolute;
-            top: 50%;
-            left: 3px;
-            transform: translateY(-50%);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="light"] .theme-toggle::before {
-            content: '🌙';
-            left: 25px;
         }
 
         .theme-toggle::after {
@@ -223,13 +416,18 @@
             top: 2px;
             left: 2px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--glow);
         }
 
         [data-theme="light"] .theme-toggle::after {
             left: 26px;
         }
 
-        /* Mobile Menu Toggle */
+        .theme-icon {
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -259,6 +457,125 @@
             transform: rotate(-45deg) translate(7px, -7px);
         }
 
+        /* ===== Audio Controls with Volume Slider ===== */
+        .audio-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .volume-slider-container {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            background: var(--bg-card);
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .audio-container:hover .volume-slider-container {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100px;
+            height: 6px;
+            background: var(--bg-secondary);
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--glow);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--glow);
+        }
+
+        .volume-value {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            min-width: 35px;
+        }
+
+        .audio-control {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px var(--glow);
+        }
+
+        .audio-control.playing {
+            animation: audioWave 1.5s ease-in-out infinite;
+        }
+
+        @keyframes audioWave {
+            0%, 100% { 
+                box-shadow: 0 5px 20px var(--shadow); 
+            }
+            50% { 
+                box-shadow: 0 5px 40px var(--glow), 0 0 0 10px rgba(0, 212, 255, 0.1); 
+            }
+        }
+
+        /* ===== Custom Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent-secondary) 100%);
+        }
+
         /* ===== Hero Section ===== */
         .hero {
             min-height: 100vh;
@@ -266,26 +583,8 @@
             align-items: center;
             justify-content: center;
             padding: 6rem 2rem 2rem;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            opacity: 0.1;
-            top: -200px;
-            right: -200px;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            z-index: 1;
         }
 
         .hero-content {
@@ -295,29 +594,29 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(2.5rem, 7vw, 5rem);
             margin-bottom: 1rem;
             animation: fadeInUp 0.8s ease;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero .subtitle {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: clamp(1.2rem, 3vw, 2rem);
             color: var(--text-secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             animation: fadeInUp 1s ease;
         }
 
-        .hero .highlight {
-            color: var(--accent);
-            font-weight: bold;
-        }
-
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
             animation: fadeInUp 1.2s ease;
+            line-height: 1.8;
         }
 
         .cta-buttons {
@@ -329,26 +628,26 @@
         }
 
         .btn {
-            padding: 1rem 2rem;
-            border-radius: 8px;
+            padding: 1.2rem 2.5rem;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
         .btn-primary {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
             color: #000;
-            border: 2px solid var(--accent);
+            border: 2px solid transparent;
+            box-shadow: 0 5px 20px var(--shadow);
         }
 
         .btn-primary:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--shadow);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px var(--glow);
         }
 
         .btn-secondary {
@@ -360,8 +659,8 @@
         .btn-secondary:hover {
             background: var(--accent);
             color: #000;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--shadow);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px var(--shadow);
         }
 
         @keyframes fadeInUp {
@@ -377,16 +676,22 @@
 
         /* ===== Section Styles ===== */
         section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
+            padding: 6rem 2rem;
+            max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         section h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-size: clamp(2rem, 5vw, 3rem);
             margin-bottom: 1rem;
             position: relative;
             display: inline-block;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         section h2::after {
@@ -396,14 +701,51 @@
             left: 0;
             width: 60%;
             height: 4px;
-            background: var(--accent);
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
             border-radius: 2px;
+            box-shadow: 0 2px 10px var(--glow);
         }
 
-        section p {
+        section > p {
             color: var(--text-secondary);
             margin-bottom: 3rem;
             font-size: 1.1rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        .tilt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 212, 255, 0.15), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            border-radius: inherit;
+            z-index: 1;
+        }
+
+        .tilt-card:hover::before {
+            opacity: 1;
         }
 
         /* ===== About Section ===== */
@@ -411,71 +753,46 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
-            align-items: center;
-        }
-
-        .about-text {
-            animation: fadeInLeft 1s ease;
-        }
-
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            align-items: start;
         }
 
         .about-text h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
             color: var(--accent);
         }
 
         .about-text p {
             margin-bottom: 1.5rem;
-            line-height: 1.8;
+            line-height: 1.9;
+            color: var(--text-secondary);
         }
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
-            animation: fadeInRight 1s ease;
-        }
-
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         .skill-card {
             background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 2rem;
+            border-radius: 15px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .skill-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px var(--shadow);
             border-color: var(--accent);
+            box-shadow: 0 15px 40px var(--shadow);
         }
 
         .skill-card h4 {
             color: var(--accent);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
         }
 
         .skill-card ul {
@@ -484,16 +801,120 @@
         }
 
         .skill-card li {
-            padding: 0.3rem 0;
+            padding: 0.5rem 0;
             position: relative;
-            padding-left: 1.5rem;
+            padding-left: 1.8rem;
+            transition: all 0.3s ease;
         }
 
         .skill-card li::before {
-            content: '▹';
+            content: '▸';
             position: absolute;
             left: 0;
             color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .skill-card li:hover {
+            color: var(--accent);
+            padding-left: 2.2rem;
+        }
+
+        /* ===== Resume Download Section ===== */
+        .resume-download {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            text-align: center;
+            margin-top: 3rem;
+            transition: all 0.3s ease;
+        }
+
+        .resume-download:hover {
+            border-color: var(--accent);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .resume-download h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .resume-download p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .resume-download .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* ===== Scroll Progress ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            z-index: 10001;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px var(--glow);
+        }
+        /* ===== Interests Section ===== */
+        .interests-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .interest-category {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .interest-category:hover {
+            border-color: var(--accent);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .interest-category h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .interest-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .interest-tag {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .interest-tag:hover {
+            background: var(--accent);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--glow);
         }
 
         /* ===== Experience Section ===== */
@@ -507,16 +928,17 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 2px;
+            width: 3px;
             height: 100%;
-            background: var(--border);
+            background: linear-gradient(180deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            box-shadow: 0 0 10px var(--glow);
         }
 
         .experience-item {
             display: grid;
-            grid-template-columns: 1fr 50px 1fr;
+            grid-template-columns: 1fr 80px 1fr;
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             position: relative;
         }
 
@@ -526,34 +948,37 @@
 
         .exp-content {
             background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 12px;
+            padding: 2.5rem;
+            border-radius: 15px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            min-width: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .exp-content:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px var(--shadow);
             border-color: var(--accent);
+            box-shadow: 0 15px 50px var(--shadow);
         }
 
         .exp-content h3 {
             color: var(--accent);
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
         }
 
         .exp-content .role {
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             color: var(--text-primary);
+            font-size: 1.1rem;
         }
 
         .exp-content .duration {
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
         }
 
         .exp-content ul {
@@ -562,101 +987,131 @@
         }
 
         .exp-content li {
-            padding: 0.5rem 0;
+            padding: 0.6rem 0;
             position: relative;
-            padding-left: 1.5rem;
+            padding-left: 2rem;
+            line-height: 1.7;
         }
 
         .exp-content li::before {
-            content: '▹';
+            content: '▸';
             position: absolute;
             left: 0;
             color: var(--accent);
+            font-size: 1.2rem;
         }
 
         .timeline-dot {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: var(--accent);
             border-radius: 50%;
             position: relative;
             z-index: 2;
-            margin: 2rem auto;
-            box-shadow: 0 0 0 4px var(--bg-primary), 0 0 0 6px var(--accent);
+            margin: 2.5rem auto;
+            box-shadow: 
+                0 0 0 6px var(--bg-primary), 
+                0 0 0 8px var(--accent),
+                0 0 20px var(--glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
         }
 
         /* ===== Projects Section ===== */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2.5rem;
         }
 
         .project-card {
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
         }
 
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px var(--shadow);
             border-color: var(--accent);
+            box-shadow: 0 20px 60px var(--shadow);
         }
 
         .project-card .project-header {
-            padding: 1.5rem;
+            padding: 2rem;
             background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            position: relative;
+            z-index: 1;
         }
 
         .project-card h3 {
             color: var(--accent);
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
         }
 
         .project-card .project-type {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 1rem;
         }
 
         .project-card p {
-            padding: 0 1.5rem 1.5rem;
+            padding: 0 2rem 2rem;
             color: var(--text-secondary);
             line-height: 1.8;
+            position: relative;
+            z-index: 1;
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 0 1.5rem 1rem;
+            gap: 0.7rem;
+            padding: 0 2rem 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .tag {
             background: var(--bg-secondary);
             color: var(--accent);
-            padding: 0.3rem 0.8rem;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.85rem;
             border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--accent);
+            color: #000;
+            transform: translateY(-3px);
         }
 
         .project-links {
             display: flex;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem;
             border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
         }
 
         .project-links a {
             color: var(--accent);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -664,15 +1119,15 @@
         }
 
         .project-links a:hover {
-            color: var(--accent-hover);
-            transform: translateX(5px);
+            color: var(--accent-secondary);
+            transform: translateX(8px);
         }
 
         /* ===== Contact Section ===== */
         .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 4rem;
         }
 
         .contact-info {
@@ -682,35 +1137,40 @@
         }
 
         .contact-info h3 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 1rem;
+            color: var(--accent);
         }
 
         .contact-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
+            gap: 1.5rem;
+            padding: 1.5rem;
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 15px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
         .contact-item:hover {
-            transform: translateX(10px);
+            transform: translateX(15px);
             border-color: var(--accent);
+            box-shadow: 0 10px 30px var(--shadow);
         }
 
         .contact-item .icon {
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: var(--accent);
+            min-width: 40px;
+            text-align: center;
         }
 
         .contact-item a {
             color: var(--text-primary);
             text-decoration: none;
             transition: color 0.3s ease;
+            word-break: break-word;
         }
 
         .contact-item a:hover {
@@ -719,29 +1179,30 @@
 
         .contact-form {
             background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 12px;
+            padding: 3rem;
+            border-radius: 15px;
             border: 1px solid var(--border);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             color: var(--text-primary);
             font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 1rem;
+            padding: 1.2rem;
             background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
             color: var(--text-primary);
             font-family: inherit;
             font-size: 1rem;
@@ -752,66 +1213,68 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--shadow);
+            box-shadow: 0 0 0 4px var(--shadow);
         }
 
         .form-group textarea {
             resize: vertical;
-            min-height: 150px;
+            min-height: 180px;
         }
 
         .form-button {
             width: 100%;
-            padding: 1rem;
-            background: var(--accent);
+            padding: 1.3rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
             color: #000;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 20px var(--shadow);
         }
 
         .form-button:hover:not(:disabled) {
-            background: var(--accent-hover);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--shadow);
+            box-shadow: 0 10px 40px var(--glow);
         }
 
         .form-button:disabled {
             opacity: 0.6;
-            cursor: not-allowed;
         }
 
         .form-status {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 8px;
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            border-radius: 10px;
             text-align: center;
             display: none;
+            font-weight: 600;
         }
 
         .form-status.success {
-            background: rgba(0, 255, 0, 0.1);
-            color: #00ff00;
-            border: 1px solid #00ff00;
+            background: rgba(0, 255, 100, 0.1);
+            color: #00ff64;
+            border: 2px solid #00ff64;
         }
 
         .form-status.error {
-            background: rgba(255, 0, 0, 0.1);
-            color: #ff0000;
-            border: 1px solid #ff0000;
+            background: rgba(255, 0, 100, 0.1);
+            color: #ff0064;
+            border: 2px solid #ff0064;
         }
 
         /* ===== Footer ===== */
         footer {
             background: var(--bg-secondary);
-            padding: 3rem 2rem 2rem;
+            padding: 4rem 2rem 2rem;
             border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             text-align: center;
         }
@@ -819,24 +1282,25 @@
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .social-links a {
             color: var(--text-secondary);
-            font-size: 1.5rem;
+            font-size: 2rem;
             transition: all 0.3s ease;
         }
 
         .social-links a:hover {
             color: var(--accent);
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            filter: drop-shadow(0 5px 15px var(--glow));
         }
 
         .footer-content p {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         /* ===== Responsive Design ===== */
@@ -846,6 +1310,7 @@
                 top: 70px;
                 right: -100%;
                 width: 300px;
+                max-width: 80vw;
                 height: calc(100vh - 70px);
                 background: var(--bg-secondary);
                 flex-direction: column;
@@ -867,20 +1332,33 @@
             }
 
             .experience-timeline::before {
-                left: 0;
+                left: 30px;
             }
 
             .experience-item {
-                grid-template-columns: 50px 1fr;
-                gap: 1rem;
+                grid-template-columns: 60px 1fr;
+                gap: 1.5rem;
             }
 
             .experience-item .exp-content:first-child {
                 order: 2;
+                grid-column: 2;
             }
 
             .experience-item:nth-child(even) .exp-content:first-child {
                 order: 2;
+                grid-column: 2;
+            }
+
+            .timeline-dot {
+                margin: 2.5rem 0;
+                grid-column: 1;
+            }
+
+            .exp-content {
+                padding: 2rem;
+                width: 100%;
+                min-width: 0;
             }
 
             .contact-container {
@@ -890,15 +1368,37 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
+
+            .interests-container {
+                grid-template-columns: 1fr;
+            }
+
+            .audio-container {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .audio-control {
+                width: 50px;
+                height: 50px;
+            }
+
+            .volume-slider-container {
+                padding: 0.6rem 1rem;
+            }
+
+            .volume-slider {
+                width: 80px;
+            }
         }
 
         @media (max-width: 640px) {
             section {
-                padding: 3rem 1rem;
+                padding: 4rem 1.5rem;
             }
 
             .hero {
-                padding: 5rem 1rem 2rem;
+                padding: 5rem 1.5rem 2rem;
             }
 
             .cta-buttons {
@@ -909,606 +1409,818 @@
                 width: 100%;
                 text-align: center;
             }
-        }
 
-        /* ===== Scroll Progress Indicator ===== */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
-            z-index: 10001;
-            transition: width 0.1s ease;
+            .project-card .project-header,
+            .project-card p,
+            .project-tags,
+            .project-links {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .exp-content {
+                padding: 1.5rem;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+
+            .experience-timeline::before {
+                left: 20px;
+            }
+
+            .experience-item {
+                grid-template-columns: 50px 1fr;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
-<body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-dot"></div>
+<body data-theme="dark">
 
-    <!-- Scroll Progress -->
-    <div class="scroll-progress"></div>
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+</div>
+<div class="grid-bg"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">AS</a>
-            <button class="menu-toggle" id="menuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><button class="theme-toggle" id="themeToggle"></button></li>
-            </ul>
+<!-- Custom Cursor -->
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress"></div>
+
+<!-- Audio Control -->
+<div class="audio-container">
+    <div class="volume-slider-container">
+        <input type="range" min="0" max="100" value="30" class="volume-slider" id="volumeSlider">
+        <span class="volume-value" id="volumeValue">30%</span>
+    </div>
+    <button class="audio-control" id="audioToggle" title="Toggle Background Music">🔇</button>
+</div>
+<audio id="bgMusic" loop>
+    <source src="background-music.mp3" type="audio/mpeg">
+    <source src="background-music.ogg" type="audio/ogg">
+</audio>
+
+<!-- Navigation -->
+<nav id="navbar">
+    <div class="nav-container">
+        <a href="#home" class="logo">AS</a>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="nav-link">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#interests" class="nav-link">Interests</a></li>
+            <li><a href="#experience" class="nav-link">Experience</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+            <li>
+                <div class="theme-wrapper">
+                    <button class="theme-toggle" id="themeToggle"></button>
+                    <span class="theme-icon" id="themeIcon">☀️</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-content">
+        <h1>Anusheel Soni</h1>
+        <p class="subtitle">Unity/C# Game Developer</p>
+        <p>Specializing in gameplay programming, game mechanics, and rapid prototyping across 2D/3D/AR/VR platforms. Passionate about creating engaging gaming experiences with optimized performance and innovative design.</p>
+        <div class="cta-buttons">
+            <a href="#projects" class="btn btn-primary">View My Work</a>
+            <a href="#contact" class="btn btn-secondary">Get In Touch</a>
         </div>
-    </nav>
+    </div>
+</section>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Hi, I'm <span class="highlight">Anusheel Soni</span></h1>
-            <p class="subtitle">Unity/C# Game Developer</p>
-            <p>Specializing in gameplay programming, game mechanics, and rapid prototyping across 2D/3D/AR/VR platforms. Passionate about creating engaging gaming experiences with optimized performance and innovative design.</p>
-            <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-            </div>
+<!-- About Section -->
+<section id="about" class="reveal">
+    <h2>About Me</h2>
+    <p>Game developer with a passion for creating immersive experiences</p>
+    <div class="about-content">
+        <div class="about-text">
+            <h3>Who I Am</h3>
+            <p>I'm a Unity/C# game developer currently pursuing B.Tech in Computer Science and Engineering (Gaming Technology) at VIT Bhopal University. I specialize in gameplay programming, game mechanics, and rapid prototyping with experience in 2D, 3D, AR, and VR development.</p>
+            <p>Currently working as a Game Developer Intern at Eternoplay Studio, contributing to HexaBattle with gameplay programming and optimization. I'm passionate about building polished, performance-optimized games with modular architecture and innovative mechanics.</p>
+            <p>When I'm not coding games, you'll find me playing football, producing music in FL Studio, or exploring new interactive media technologies.</p>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Game developer with a passion for creating immersive experiences</p>
-        <div class="about-content">
-            <div class="about-text">
-                <h3>Who I Am</h3>
-                <p>I'm a Unity/C# game developer currently pursuing B.Tech in Computer Science and Engineering (Gaming Technology) at VIT Bhopal University with a CGPA of 8.62/10. I specialize in gameplay programming, game mechanics, and rapid prototyping with experience in 2D, 3D, AR, and VR development.</p>
-                <p>Currently working as a Game Developer Intern at EternoPlay Studio, contributing to HexaBattle with gameplay programming and optimization that helped achieve a 30-40% increase in DAU. I'm passionate about building polished, performance-optimized games with modular architecture and innovative mechanics.</p>
-                <p>When I'm not coding games, you'll find me playing football, producing music in FL Studio, or exploring new interactive media technologies.</p>
+        <div class="skills-grid">
+            <div class="skill-card tilt-card reveal">
+                <h4>Languages</h4>
+                <ul>
+                    <li>C#</li>
+                    <li>C++</li>
+                </ul>
             </div>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <h4>Languages</h4>
-                    <ul>
-                        <li>C#</li>
-                        <li>C++</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h4>Engines & Platforms</h4>
-                    <ul>
-                        <li>Unity</li>
-                        <li>WebGL</li>
-                        <li>AR/VR/XR</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h4>Core Systems</h4>
-                    <ul>
-                        <li>OOP & DSA</li>
-                        <li>Object Pooling</li>
-                        <li>Physics Simulation</li>
-                        <li>Procedural Generation</li>
-                    </ul>
-                </div>
-                <div class="skill-card">
-                    <h4>Design & Tools</h4>
-                    <ul>
-                        <li>Game Design</li>
-                        <li>Level Design</li>
-                        <li>UI/UX</li>
-                        <li>Git & GitHub</li>
-                    </ul>
-                </div>
+            <div class="skill-card tilt-card reveal">
+                <h4>Engines & Platforms</h4>
+                <ul>
+                    <li>Unity</li>
+                    <li>WebGL</li>
+                    <li>AR/VR/XR</li>
+                </ul>
             </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience">
-        <h2>Experience</h2>
-        <p>My professional journey in game development</p>
-        <div class="experience-timeline">
-            <div class="experience-item">
-                <div class="exp-content">
-                    <h3>EternoPlay Studio</h3>
-                    <div class="role">Game Developer Intern</div>
-                    <div class="duration">October 2025 - Present (Remote)</div>
-                    <ul>
-                        <li>Contributing to HexaBattle with gameplay programming in Unity and C#</li>
-                        <li>Optimized performance for mobile builds and refined UI/UX flows</li>
-                        <li>Improved player experience using feedback and KPI analysis</li>
-                        <li>Contributed to 30-40% increase in Daily Active Users (DAU)</li>
-                    </ul>
-                </div>
-                <div class="timeline-dot"></div>
-                <div></div>
+            <div class="skill-card tilt-card reveal">
+                <h4>Core Systems</h4>
+                <ul>
+                    <li>OOP & DSA</li>
+                    <li>Object Pooling</li>
+                    <li>Physics Simulation</li>
+                    <li>Procedural Generation</li>
+                </ul>
             </div>
-
-            <div class="experience-item">
-                <div></div>
-                <div class="timeline-dot"></div>
-                <div class="exp-content">
-                    <h3>IDZ Digital Private Limited</h3>
-                    <div class="role">Unity Game Developer Intern</div>
-                    <div class="duration">January 2025 - April 2025 (Remote)</div>
-                    <ul>
-                        <li>Prototyped 10+ games across 2D, 3D, AR/VR/XR platforms</li>
-                        <li>Delivered 3-4 prototypes per month with optimized game loops</li>
-                        <li>Coordinated with 4 designers to refine gameplay mechanics</li>
-                        <li>Implemented innovative game concepts with rapid iteration</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="experience-item">
-                <div class="exp-content">
-                    <h3>VR and Gaming Club</h3>
-                    <div class="role">Core Member</div>
-                    <div class="duration">September 2024 - July 2025 (VIT Bhopal)</div>
-                    <ul>
-                        <li>Conducted 2 game jams with 150-200 participants</li>
-                        <li>Mentored participants on game development best practices</li>
-                        <li>Organized workshops and development sessions</li>
-                    </ul>
-                </div>
-                <div class="timeline-dot"></div>
-                <div></div>
+            <div class="skill-card tilt-card reveal">
+                <h4>Design & Tools</h4>
+                <ul>
+                    <li>Game Design</li>
+                    <li>Level Design</li>
+                    <li>UI/UX</li>
+                    <li>Git & GitHub</li>
+                </ul>
             </div>
         </div>
-    </section>
+    </div>
+    
+    <!-- Resume Download -->
+    <div class="resume-download tilt-card reveal">
+        <h3>📄 Download My Resume</h3>
+        <p>Get a detailed look at my experience, skills, and projects</p>
+        <a href="https://raw.githubusercontent.com/eroxion/Resume/main/AnusheelSoniResume.pdf" download="AnusheelSoni_Resume.pdf" class="btn btn-primary">
+            <span>⬇️</span>
+            <span>Download Resume (PDF)</span>
+        </a>
+    </div>
+</section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2>Featured Projects</h2>
-        <p>A showcase of my game development work</p>
-        <div class="projects-grid">
-            <!-- Helix Jump -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>Helix Jump Proto</h3>
-                    <div class="project-type">3D Arcade | WebGL/Mobile</div>
-                </div>
-                <p>Procedurally generated arcade game with physics-based ball mechanics, 4 difficulty levels, object pooling optimization, and persistent high scores. Developed in 3 days with constant 60 FPS performance.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity 6</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">Procedural Gen</span>
-                    <span class="tag">Object Pooling</span>
-                    <span class="tag">WebGL</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://eroxion.github.io/Helix_Jump_Proto/" target="_blank">Play Demo →</a>
-                    <a href="https://github.com/eroxion/Helix_Jump_Proto" target="_blank">GitHub →</a>
+<!-- Interests Section -->
+<section id="interests" class="reveal">
+    <h2>Beyond Development</h2>
+    <p>What makes me tick as a creative person</p>
+    <div class="interests-container">
+        <div class="interest-category tilt-card reveal">
+            <h3>🎮 Favorite Games</h3>
+            <div class="interest-items">
+                <span class="interest-tag">Rocket League</span>
+                <span class="interest-tag">Silent Hill</span>
+                <span class="interest-tag">Deep Rock Galactic</span>
+                <span class="interest-tag">Minecraft</span>
+                <span class="interest-tag">EA FC</span>
+                <span class="interest-tag">Call of Duty: MW</span>
+                <span class="interest-tag">NFS Most Wanted</span>
+                <span class="interest-tag">GTA V</span>
+            </div>
+        </div>
+        <div class="interest-category tilt-card reveal">
+            <h3>🎬 Favorite Entertainment</h3>
+            <div class="interest-items">
+                <span class="interest-tag">Fight Club</span>
+                <span class="interest-tag">John Wick</span>
+                <span class="interest-tag">The Promised Neverland</span>
+                <span class="interest-tag">Tintin</span>
+                <span class="interest-tag">Breaking Bad</span>
+                <span class="interest-tag">Mr Bean</span>
+                <span class="interest-tag">Blair Witch Project</span>
+                <span class="interest-tag">Alice in Borderland</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience" class="reveal">
+    <h2>Experience</h2>
+    <p>My professional journey in game development</p>
+    <div class="experience-timeline">
+        <div class="experience-item reveal">
+            <div class="exp-content tilt-card">
+                <h3>Eternoplay Studio</h3>
+                <div class="role">Game Developer Intern</div>
+                <div class="duration">October 2025 - Present (Remote)</div>
+                <ul>
+                    <li>Contributing to HexaBattle with gameplay programming in Unity and C#</li>
+                    <li>Optimized performance for mobile builds and refined UI/UX flows</li>
+                    <li>Improved player experience using feedback and KPI analysis</li>
+                </ul>
+            </div>
+            <div class="timeline-dot"></div>
+            <div></div>
+        </div>
+
+        <div class="experience-item reveal">
+            <div></div>
+            <div class="timeline-dot"></div>
+            <div class="exp-content tilt-card">
+                <h3>IDZ Digital Private Limited</h3>
+                <div class="role">Unity Game Developer Intern</div>
+                <div class="duration">January 2025 - April 2025 (Remote)</div>
+                <ul>
+                    <li>Prototyped 10+ games across 2D, 3D, AR/VR/XR platforms</li>
+                    <li>Delivered 3-4 prototypes per month with optimized game loops</li>
+                    <li>Coordinated with 4 designers to refine gameplay mechanics</li>
+                    <li>Implemented innovative game concepts with rapid iteration</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="experience-item reveal">
+            <div class="exp-content tilt-card">
+                <h3>VR and Gaming Club</h3>
+                <div class="role">Core Member</div>
+                <div class="duration">September 2024 - July 2025 (VIT Bhopal)</div>
+                <ul>
+                    <li>Conducted 2 game jams with 150-200 participants</li>
+                    <li>Mentored participants on game development best practices</li>
+                    <li>Organized workshops and development sessions</li>
+                </ul>
+            </div>
+            <div class="timeline-dot"></div>
+            <div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section - ALL 15 PROJECTS -->
+<section id="projects" class="reveal">
+    <h2>Featured Projects</h2>
+    <p>A showcase of my game development work</p>
+    <div class="projects-grid">
+        
+        <!-- Project 1: Helix Jump -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Helix Jump Proto</h3>
+                <div class="project-type">3D Arcade | WebGL/Mobile</div>
+            </div>
+            <p>Procedurally generated arcade game with physics-based ball mechanics, 4 difficulty levels, object pooling optimization, and persistent high scores. Developed in 3 days with constant 60 FPS.</p>
+            <div class="project-tags">
+                <span class="tag">Unity 6</span>
+                <span class="tag">C#</span>
+                <span class="tag">Procedural Gen</span>
+                <span class="tag">Object Pooling</span>
+                <span class="tag">WebGL</span>
+            </div>
+            <div class="project-links">
+                <a href="https://eroxion.github.io/Helix_Jump_Proto/" target="_blank">Play Demo →</a>
+                <a href="https://github.com/eroxion/Helix_Jump_Proto" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 2: Tic Tac Toe -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Tic Tac Toe 2D</h3>
+                <div class="project-type">2D Strategy | WebGL/Mobile</div>
+            </div>
+            <p>PvP and PvE strategy game implementing Minimax algorithm for AI opponent. Features responsive UI with Unity UI Toolkit and modular architecture following SOLID principles.</p>
+            <div class="project-tags">
+                <span class="tag">Unity 6</span>
+                <span class="tag">C#</span>
+                <span class="tag">AI - Minimax</span>
+                <span class="tag">UI Toolkit</span>
+                <span class="tag">SOLID</span>
+            </div>
+            <div class="project-links">
+                <a href="https://strange-erox.itch.io/tic-tac-toe" target="_blank">Play on itch.io →</a>
+            </div>
+        </div>
+
+        <!-- Project 3: Brahm -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Brahm</h3>
+                <div class="project-type">3D Narrative Puzzle | PC</div>
+            </div>
+            <p>Narrative-driven game promoting Indian culture with 8 puzzle levels across 4 core types. Team project featuring modular C# logic and Unity event system integration.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">Team Project</span>
+                <span class="tag">Puzzle Design</span>
+                <span class="tag">Narrative</span>
+            </div>
+            <div class="project-links">
+                <a href="https://strange-erox.itch.io/brahm" target="_blank">Play on itch.io →</a>
+            </div>
+        </div>
+
+        <!-- Project 4: VR Paradox Museum -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>VR 3D Paradox Museum</h3>
+                <div class="project-type">VR Experience</div>
+            </div>
+            <p>Immersive VR museum experience showcasing optical illusions and paradoxes. Features interactive exhibits with spatial audio and optimized VR interactions.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">VR/XR</span>
+                <span class="tag">Interactive</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/VR-3D-Paradox-Museum" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 5: VR Digging Simulator -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>VR 3D Digging Simulator</h3>
+                <div class="project-type">VR Simulation</div>
+            </div>
+            <p>Physics-based VR digging simulation with realistic tool interactions and terrain deformation. Optimized for smooth VR performance.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">VR/XR</span>
+                <span class="tag">Physics</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/VR-3D-Digging-Simulator" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 6: VR Snap and Detach -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>VR 3D Snap and Detach</h3>
+                <div class="project-type">VR Mechanics Prototype</div>
+            </div>
+            <p>VR interaction prototype demonstrating snap mechanics and object detachment systems. Clean implementation of grab, snap, and release mechanics.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">VR/XR</span>
+                <span class="tag">Interaction</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/VR-3D-Snap-and-Detach" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 7: Casino Wreck -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Casino Wreck</h3>
+                <div class="project-type">Action Game</div>
+            </div>
+            <p>Fast-paced action game with dynamic gameplay mechanics and polished visual effects. Features engaging combat and progression systems.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">Action</span>
+                <span class="tag">Game Mechanics</span>
+            </div>
+            <div class="project-links">
+                <a href="https://strange-erox.itch.io/casinowreck" target="_blank">Play on itch.io →</a>
+            </div>
+        </div>
+
+        <!-- Project 8: Dropshot -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Dropshot</h3>
+                <div class="project-type">Arcade Game</div>
+            </div>
+            <p>Skill-based arcade game featuring precision mechanics and increasing difficulty. Clean UI design with addictive gameplay loop.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">Arcade</span>
+                <span class="tag">Mobile</span>
+            </div>
+            <div class="project-links">
+                <a href="https://strange-erox.itch.io/dropshot" target="_blank">Play on itch.io →</a>
+            </div>
+        </div>
+        <!-- Project 9: Dynamic Rainfall 2D -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Dynamic Rainfall 2D</h3>
+                <div class="project-type">2D Particle System</div>
+            </div>
+            <p>Dynamic weather system prototype with realistic rainfall particle effects. Optimized particle management with pooling.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">Particles</span>
+                <span class="tag">VFX</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/Dynamic_Rainfall_2D_Prototype" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 10: Asset Particle Disintegration -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Asset Particle Disintegration</h3>
+                <div class="project-type">VFX Prototype</div>
+            </div>
+            <p>Particle disintegration effect system for game objects with customizable parameters. Smooth visual effects for destruction mechanics.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">VFX</span>
+                <span class="tag">Particles</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/Asset_Particle_Disintegration_Prototype" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 11: Drag and Snap Tween -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Drag and Snap Tween</h3>
+                <div class="project-type">UI Interaction</div>
+            </div>
+            <p>Smooth drag-and-drop system with snap-to-grid and tween animations. Clean UI interaction implementation.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">UI</span>
+                <span class="tag">DOTween</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/Drag_and_Snap_Tween_Prototype" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 12: Music Player -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Music Player Prototype</h3>
+                <div class="project-type">Audio System</div>
+            </div>
+            <p>In-game music player with playlist management, shuffle modes, and volume controls. Clean audio management system.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">Audio</span>
+                <span class="tag">UI</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/Music_Player_Prototype" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 13: Merging Game -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Merging Game Prototype</h3>
+                <div class="project-type">Puzzle/Casual</div>
+            </div>
+            <p>Merge mechanics prototype with progression system and satisfying visual feedback. Addictive puzzle gameplay.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">Merge Mechanics</span>
+                <span class="tag">Mobile</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/Merging_Game_Prototype" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 14: 3D Airplane Runner -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>3D Airplane Runner</h3>
+                <div class="project-type">3D Endless Runner</div>
+            </div>
+            <p>Endless runner with procedural obstacle generation and smooth flight controls. Optimized for mobile performance.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">3D</span>
+                <span class="tag">Endless Runner</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/3D_Airplane_Runner_Prototype" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+        <!-- Project 15: Flappy Bird WebGL -->
+        <div class="project-card tilt-card reveal">
+            <div class="project-header">
+                <h3>Flappy Bird WebGL</h3>
+                <div class="project-type">2D Arcade | WebGL</div>
+            </div>
+            <p>WebGL implementation of classic Flappy Bird with polished physics and responsive controls. Clean code architecture.</p>
+            <div class="project-tags">
+                <span class="tag">Unity</span>
+                <span class="tag">C#</span>
+                <span class="tag">WebGL</span>
+                <span class="tag">2D Physics</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/eroxion/Flappy-Bird-WebGL" target="_blank">GitHub →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="reveal">
+    <h2>Get In Touch</h2>
+    <p>Let's create something amazing together</p>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <div class="contact-item tilt-card reveal">
+                <span class="icon">📧</span>
+                <div>
+                    <strong>Email</strong><br>
+                    <a href="mailto:anusheelsoni4@gmail.com">anusheelsoni4@gmail.com</a>
                 </div>
             </div>
-
-            <!-- Tic Tac Toe -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>Tic Tac Toe 2D</h3>
-                    <div class="project-type">2D Strategy | WebGL/Mobile</div>
-                </div>
-                <p>PvP and PvE strategy game implementing Minimax algorithm for AI opponent. Features responsive UI with Unity UI Toolkit, audio feedback, and modular architecture following SOLID principles.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity 6</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">AI - Minimax</span>
-                    <span class="tag">UI Toolkit</span>
-                    <span class="tag">SOLID</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://strange-erox.itch.io/tic-tac-toe" target="_blank">Play on itch.io →</a>
+            <div class="contact-item tilt-card reveal">
+                <span class="icon">💼</span>
+                <div>
+                    <strong>LinkedIn</strong><br>
+                    <a href="https://linkedin.com/in/anusheel-soni" target="_blank">linkedin.com/in/anusheel-soni</a>
                 </div>
             </div>
-
-            <!-- Brahm -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>Brahm</h3>
-                    <div class="project-type">3D Narrative Puzzle | PC</div>
-                </div>
-                <p>Narrative-driven game promoting Indian culture with 8 puzzle levels across 4 core types. Developed with 4-member team featuring modular C# logic, Unity event system, and particle effects integration.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">Team Project</span>
-                    <span class="tag">Puzzle Design</span>
-                    <span class="tag">Narrative</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://strange-erox.itch.io/brahm" target="_blank">Play on itch.io →</a>
+            <div class="contact-item tilt-card reveal">
+                <span class="icon">🐙</span>
+                <div>
+                    <strong>GitHub</strong><br>
+                    <a href="https://github.com/eroxion" target="_blank">github.com/eroxion</a>
                 </div>
             </div>
-
-            <!-- VR Paradox Museum -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>VR 3D Paradox Museum</h3>
-                    <div class="project-type">VR Experience</div>
-                </div>
-                <p>Immersive VR museum experience showcasing optical illusions and paradoxes. Features interactive exhibits with spatial audio and optimized VR interactions.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">VR/XR</span>
-                    <span class="tag">Interactive</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/eroxion/VR-3D-Paradox-Museum" target="_blank">GitHub →</a>
+            <div class="contact-item tilt-card reveal">
+                <span class="icon">🎮</span>
+                <div>
+                    <strong>itch.io</strong><br>
+                    <a href="https://strange-erox.itch.io" target="_blank">strange-erox.itch.io</a>
                 </div>
             </div>
-
-            <!-- VR Digging Simulator -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>VR 3D Digging Simulator</h3>
-                    <div class="project-type">VR Simulation</div>
-                </div>
-                <p>Physics-based VR digging simulation with realistic tool interactions and terrain deformation. Optimized for smooth VR performance.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">VR/XR</span>
-                    <span class="tag">Physics</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/eroxion/VR-3D-Digging-Simulator" target="_blank">GitHub →</a>
-                </div>
-            </div>
-
-            <!-- Casino Wreck -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>Casino Wreck</h3>
-                    <div class="project-type">Action Game</div>
-                </div>
-                <p>Fast-paced action game with dynamic gameplay mechanics and polished visual effects. Features engaging combat and progression systems.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">Action</span>
-                    <span class="tag">Game Mechanics</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://strange-erox.itch.io/casinowreck" target="_blank">Play on itch.io →</a>
-                </div>
-            </div>
-
-            <!-- Dropshot -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>Dropshot</h3>
-                    <div class="project-type">Arcade Game</div>
-                </div>
-                <p>Skill-based arcade game featuring precision mechanics and increasing difficulty. Clean UI design with addictive gameplay loop.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">Arcade</span>
-                    <span class="tag">Mobile</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://strange-erox.itch.io/dropshot" target="_blank">Play on itch.io →</a>
-                </div>
-            </div>
-
-            <!-- Merging Game Prototype -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>Merging Game Prototype</h3>
-                    <div class="project-type">Puzzle/Casual</div>
-                </div>
-                <p>Merge mechanics prototype with progression system and satisfying visual feedback. Demonstrates modular gameplay systems design.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">Prototype</span>
-                    <span class="tag">Merge Mechanics</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/eroxion/Merging_Game_Prototype" target="_blank">GitHub →</a>
-                </div>
-            </div>
-
-            <!-- 3D Airplane Runner -->
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>3D Airplane Runner</h3>
-                    <div class="project-type">3D Endless Runner</div>
-                </div>
-                <p>Endless runner with procedural obstacle generation and smooth flight controls. Features score tracking and increasing difficulty.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">C#</span>
-                    <span class="tag">3D</span>
-                    <span class="tag">Endless Runner</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/eroxion/3D_Airplane_Runner_Prototype" target="_blank">GitHub →</a>
-                </div>
-            </div>
-
-            <!-- More Projects Display -->
-            <div class="project-card" style="background: transparent; border: 2px dashed var(--border);">
-                <div class="project-header">
-                    <h3>More Prototypes</h3>
-                    <div class="project-type">Various Systems & Mechanics</div>
-                </div>
-                <p>Additional prototypes including Dynamic Rainfall 2D, Particle Disintegration, Drag and Snap Tween, Music Player, VR Snap and Detach, and Flappy Bird WebGL clone.</p>
-                <div class="project-tags">
-                    <span class="tag">Unity</span>
-                    <span class="tag">Rapid Prototyping</span>
-                    <span class="tag">System Design</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/eroxion" target="_blank">View All on GitHub →</a>
+            <div class="contact-item tilt-card reveal">
+                <span class="icon">💻</span>
+                <div>
+                    <strong>LeetCode</strong><br>
+                    <a href="https://leetcode.com/u/eroxion" target="_blank">leetcode.com/u/eroxion</a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2>Get In Touch</h2>
-        <p>Let's create something amazing together</p>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>Contact Information</h3>
-                <div class="contact-item">
-                    <span class="icon">📧</span>
-                    <div>
-                        <strong>Email</strong><br>
-                        <a href="mailto:anusheelsoni4@gmail.com">anusheelsoni4@gmail.com</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">💼</span>
-                    <div>
-                        <strong>LinkedIn</strong><br>
-                        <a href="https://linkedin.com/in/anusheel-soni" target="_blank">linkedin.com/in/anusheel-soni</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">🐙</span>
-                    <div>
-                        <strong>GitHub</strong><br>
-                        <a href="https://github.com/eroxion" target="_blank">github.com/eroxion</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">🎮</span>
-                    <div>
-                        <strong>itch.io</strong><br>
-                        <a href="https://strange-erox.itch.io" target="_blank">strange-erox.itch.io</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">💻</span>
-                    <div>
-                        <strong>LeetCode</strong><br>
-                        <a href="https://leetcode.com/u/eroxion" target="_blank">leetcode.com/u/eroxion</a>
-                    </div>
-                </div>
+        <form class="contact-form tilt-card reveal" id="contactForm">
+            <div class="form-group">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" required>
             </div>
-
-            <form class="contact-form" id="contactForm">
-                <div class="form-group">
-                    <label for="name">Name *</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Subject *</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message *</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="form-button">Send Message</button>
-                <div class="form-status" id="formStatus"></div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="social-links">
-                <a href="https://github.com/eroxion" target="_blank" title="GitHub">🐙</a>
-                <a href="https://linkedin.com/in/anusheel-soni" target="_blank" title="LinkedIn">💼</a>
-                <a href="https://strange-erox.itch.io" target="_blank" title="itch.io">🎮</a>
-                <a href="https://leetcode.com/u/eroxion" target="_blank" title="LeetCode">💻</a>
-                <a href="mailto:anusheelsoni4@gmail.com" title="Email">📧</a>
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required>
             </div>
-            <p>&copy; 2025 Anusheel Soni. Crafted with passion for game development.</p>
+            <div class="form-group">
+                <label for="subject">Subject *</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message *</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="form-button">Send Message</button>
+            <div class="form-status" id="formStatus"></div>
+        </form>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="social-links">
+            <a href="https://github.com/eroxion" target="_blank" title="GitHub">🐙</a>
+            <a href="https://linkedin.com/in/anusheel-soni" target="_blank" title="LinkedIn">💼</a>
+            <a href="https://strange-erox.itch.io" target="_blank" title="itch.io">🎮</a>
+            <a href="https://leetcode.com/u/eroxion" target="_blank" title="LeetCode">💻</a>
+            <a href="mailto:anusheelsoni4@gmail.com" title="Email">📧</a>
         </div>
-    </footer>
+        <p>&copy; 2025 Anusheel Soni. Crafted with passion for game development.</p>
+    </div>
+</footer>
 
-    <script>
-        // ===== EmailJS Initialization =====
-        (function() {
-            emailjs.init('C0lYKhS-ueDqkWHJX'); // Your Public Key
-        })();
+<!-- Complete JavaScript with Enhanced Cursor Trail -->
+<script>
+    // Initialize EmailJS
+    (function() {
+        emailjs.init('C0lYKhS-ueDqkWHJX');
+    })();
 
-        // ===== Custom Cursor =====
-        const cursor = document.querySelector('.cursor');
-        const cursorDot = document.querySelector('.cursor-dot');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        let dotX = 0, dotY = 0;
+    // Enhanced Custom Cursor with Trail
+    const cursor = document.querySelector('.cursor');
+    const cursorDot = document.querySelector('.cursor-dot');
+    let mouseX = 0, mouseY = 0;
+    
+    document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursor.style.left = `${mouseX}px`;
+        cursor.style.top = `${mouseY}px`;
+        cursorDot.style.left = `${mouseX}px`;
+        cursorDot.style.top = `${mouseY}px`;
+        
+        // Create trailing particle effect
+        const trail = document.createElement('div');
+        trail.className = 'cursor-trail';
+        trail.style.left = `${mouseX}px`;
+        trail.style.top = `${mouseY}px`;
+        document.body.appendChild(trail);
+        setTimeout(() => trail.remove(), 600);
+    });
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+    document.querySelectorAll('a, button, .tilt-card, .tag, .interest-tag').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // 3D Tilt Cards
+    document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * 15;
+            const rotateY = ((centerX - x) / centerX) * 15;
+            const mouseXPercent = (x / rect.width) * 100;
+            const mouseYPercent = (y / rect.height) * 100;
+            
+            card.style.setProperty('--mouse-x', `${mouseXPercent}%`);
+            card.style.setProperty('--mouse-y', `${mouseYPercent}%`);
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
         });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+    });
 
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
+    // Audio Control with Volume Slider
+    const audioToggle = document.getElementById('audioToggle');
+    const bgMusic = document.getElementById('bgMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+    
+    bgMusic.volume = 0.3;
+    let isPlaying = false;
+    
+    bgMusic.play().then(() => {
+        isPlaying = true;
+        audioToggle.textContent = '🔊';
+        audioToggle.classList.add('playing');
+    }).catch(() => {
+        audioToggle.textContent = '🔇';
+    });
 
-            dotX += (mouseX - dotX) * 0.3;
-            dotY += (mouseY - dotY) * 0.3;
-            cursorDot.style.left = dotX + 'px';
-            cursorDot.style.top = dotY + 'px';
-
-            requestAnimationFrame(animateCursor);
+    audioToggle.addEventListener('click', () => {
+        if (isPlaying) {
+            bgMusic.pause();
+            audioToggle.textContent = '🔇';
+            audioToggle.classList.remove('playing');
+        } else {
+            bgMusic.play();
+            audioToggle.textContent = '🔊';
+            audioToggle.classList.add('playing');
         }
-        animateCursor();
+        isPlaying = !isPlaying;
+    });
 
-        const hoverElements = document.querySelectorAll('a, button, .project-card');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    volumeSlider.addEventListener('input', e => {
+        bgMusic.volume = e.target.value / 100;
+        volumeValue.textContent = `${e.target.value}%`;
+    });
+
+    // Scroll Reveal Animation
+    const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        document.querySelectorAll('.reveal').forEach(el => {
+            const elementTop = el.getBoundingClientRect().top;
+            if (elementTop < windowHeight - 100) {
+                el.classList.add('active');
+            }
         });
+    };
+    
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
 
-        // ===== Theme Toggle =====
-        const themeToggle = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', currentTheme);
+    // Theme Toggle with External Icon
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const storedTheme = localStorage.getItem('theme') || 'dark';
+    
+    document.documentElement.setAttribute('data-theme', storedTheme);
+    themeIcon.textContent = storedTheme === 'dark' ? '☀️' : '🌙';
 
-        themeToggle.addEventListener('click', () => {
-            const theme = document.documentElement.getAttribute('data-theme');
-            const newTheme = theme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+    themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeIcon.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
         });
+    });
 
-        // ===== Mobile Menu Toggle =====
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (window.scrollY / scrollHeight) * 100;
+        document.querySelector('.scroll-progress').style.width = `${scrollPercent}%`;
+    });
 
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
+    // Navbar Scroll Effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Active Nav Link Highlighting
+    window.addEventListener('scroll', () => {
+        let currentId = '';
+        document.querySelectorAll('section').forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (window.scrollY >= sectionTop - 200) {
+                currentId = section.getAttribute('id');
+            }
         });
-
+        
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-            });
-        });
-
-        // ===== Scroll Progress =====
-        const scrollProgress = document.querySelector('.scroll-progress');
-        window.addEventListener('scroll', () => {
-            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrolled = (window.scrollY / scrollHeight) * 100;
-            scrollProgress.style.width = scrolled + '%';
-        });
-
-        // ===== Navbar Scroll Effect =====
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === currentId) {
+                link.classList.add('active');
             }
         });
+    });
 
-        // ===== Active Section Highlighting =====
-        const sections = document.querySelectorAll('section');
-        const navLinksArray = document.querySelectorAll('.nav-link');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinksArray.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-
-        // ===== Contact Form Submission with EmailJS =====
-        const contactForm = document.getElementById('contactForm');
+    // Contact Form Submission
+    document.getElementById('contactForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        
+        const submitBtn = e.target.querySelector('.form-button');
         const formStatus = document.getElementById('formStatus');
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const submitButton = contactForm.querySelector('.form-button');
-            const originalText = submitButton.textContent;
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-
-            try {
-                const response = await emailjs.sendForm(
-                    'service_portfolio1',    // Your Service ID
-                    'template_contact',      // Your Template ID
-                    contactForm
-                );
-
-                console.log('SUCCESS!', response.status, response.text);
-                
-                formStatus.textContent = '✓ Message sent successfully! I\'ll get back to you soon.';
-                formStatus.className = 'form-status success';
-                formStatus.style.display = 'block';
-                contactForm.reset();
-                
-            } catch (error) {
-                console.error('FAILED...', error);
-                
-                formStatus.textContent = '✗ Oops! Something went wrong. Please email me directly at anusheelsoni4@gmail.com';
-                formStatus.className = 'form-status error';
-                formStatus.style.display = 'block';
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-                
-                setTimeout(() => {
-                    formStatus.style.display = 'none';
-                }, 5000);
-            }
-        });
-
-        // ===== Scroll Animations =====
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.project-card, .skill-card, .exp-content').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-    </script>
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        try {
+            await emailjs.sendForm('service_portfolio1', 'template_contact', e.target);
+            
+            formStatus.textContent = '✓ Message sent successfully! I\'ll get back to you soon.';
+            formStatus.className = 'form-status success';
+            formStatus.style.display = 'block';
+            e.target.reset();
+            
+        } catch (error) {
+            formStatus.textContent = '✗ Oops! Something went wrong. Please email me directly at anusheelsoni4@gmail.com';
+            formStatus.className = 'form-status error';
+            formStatus.style.display = 'block';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            
+            setTimeout(() => {
+                formStatus.style.display = 'none';
+            }, 5000);
+        }
+    });
+</script>
 </body>
 </html>
