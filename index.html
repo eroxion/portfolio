@@ -988,6 +988,57 @@
             min-width: 0;
             word-wrap: break-word;
             overflow-wrap: break-word;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background images for experience cards */
+        .exp-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: 50%;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.25;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Specific background images for each company */
+        .exp-content.exp-ea::before {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0d/Electronic-Arts-Logo.svg');
+            opacity: 0.25;
+        }
+
+        .exp-content.exp-eternoplay::before {
+            background-image: url('https://assets.zyrosite.com/cdn-cgi/image/format=png/YX4azLQZKzTnjnV7/artboard-2-A85ErRjWPGCw8748.png');
+            opacity: 0.25;
+        }
+
+        .exp-content.exp-idz::before {
+		     background-size: 40%;
+            background-image: url('https://www.idzdigital.com/img/Logo-white.png');
+            opacity: 0.25;
+            filter: brightness(1.5);
+        }
+
+        .exp-content.exp-vrgc::before {
+		     background-size:40%;
+            background-image: url('https://ugc.production.linktr.ee/vDk6RxBFStG01N8EZGvw_7yVEI7Q3b3P462GY?io=true&size=avatar-v3_0');
+            opacity: 0.25;
+        }
+
+        /* Ensure content is above the background */
+        .exp-content h3,
+        .exp-content .role,
+        .exp-content .duration,
+        .exp-content ul {
+            position: relative;
+            z-index: 1;
         }
 
         .exp-content:hover {
@@ -1851,7 +1902,7 @@
         <div class="experience-timeline">
             <!-- Experience 1: Electronic Arts (EA) -->
             <div class="experience-item reveal">
-                <div class="exp-content tilt-card">
+                <div class="exp-content tilt-card exp-ea">
                     <h3>Electronic Arts (EA)</h3>
                     <div class="role">Quality Analyst Intern</div>
                     <div class="duration">January 2026 - June 2026 | Upcoming</div>
@@ -1871,7 +1922,7 @@
             <div class="experience-item reveal">
                 <div></div>
                 <div class="timeline-dot"></div>
-                <div class="exp-content tilt-card">
+                <div class="exp-content tilt-card exp-eternoplay">
                     <h3>Eternoplay Studio</h3>
                     <div class="role">Game Developer Intern</div>
                     <div class="duration">October 2025 - December 2025 | Remote</div>
@@ -1887,7 +1938,7 @@
 
             <!-- Experience 3: IDZ Digital -->
             <div class="experience-item reveal">
-                <div class="exp-content tilt-card">
+                <div class="exp-content tilt-card exp-idz">
                     <h3>IDZ Digital Private Limited</h3>
                     <div class="role">Unity Game Developer Intern</div>
                     <div class="duration">January 2025 - April 2025 | Remote</div>
@@ -1906,7 +1957,7 @@
             <div class="experience-item reveal">
                 <div></div>
                 <div class="timeline-dot"></div>
-                <div class="exp-content tilt-card">
+                <div class="exp-content tilt-card exp-vrgc">
                     <h3>VR and Gaming Club</h3>
                     <div class="role">Core Member</div>
                     <div class="duration">September 2024 - July 2025 | VIT Bhopal</div>
